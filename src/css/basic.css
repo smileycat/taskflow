@@ -351,6 +351,9 @@ ol,
 ul {
   padding-inline-start: 0; }
 
+.bold {
+  font-weight: bold; }
+
 .btn-none {
   background-color: unset;
   border: none;
@@ -439,6 +442,13 @@ ul {
 
 .inline-list li {
   margin-right: 0.5rem; }
+
+.input-none {
+  background-color: unset;
+  border: none;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0; }
 
 .items-center {
   align-items: center; }

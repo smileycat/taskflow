@@ -18,20 +18,31 @@ function showHideSideNav() {
 
 function switchTask(taskName) {
     // Remove .active class on previous tab
-    let prevTab = document.getElementById(Task.getCurrentTask().name);
+    let prevTab = document.getElementById(Task.getCurrentTask().getName());
     prevTab.className = prevTab.className.replace(' active', '');
     
     // Add .active class to the current tab
     document.getElementById(taskName).className += ' active';
     
     // Change the display contents according to current tab
-    document.getElementById('todo-content').innerHTML = '';
+    taskContainer.innerHTML = '';
     Task.setCurrentTask(taskName);
 
     // Change title
-    document.getElementById('todo-title').innerText = taskName;
+    document.getElementById('task-title').value = taskName;
     // Close the side bar if it's active in small screen
     sideNav.className = sideNav.className.replace(' active', '');
+    updateConfig();
+}
+
+function updateTaskNameDOM(element) {
+    //Update task name
+    const oldName = Task.getCurrentTask().getName();
+    Task.getCurrentTask().setName(element.value);
+    // Update tab's name to the new name.
+    document.getElementById(oldName).querySelector('span').innerText = element.value;
+    document.getElementById(oldName).id = element.value;
+    updateConfig();
 }
 
 function appendItemDOM(item) {
@@ -41,11 +52,11 @@ function appendItemDOM(item) {
                         '<i class="ml-2 fas fa-bars" onmousedown="draggables(' + id + ', this);" onmouseleave="undraggable(' + id + ', this);"></i>';
     const itemTag = '<li id="' + id + '" class="list-item">' +
                         '<button class="btn-none mr-2" onclick="completeItemDOM(' + id + ')">&#9675;</button>' +
-                        '<input type="text" class="todo-input" value="' + text + '" onchange="updateItemDOM(' + id + ', this)" />' +
+                        '<input type="text" class="item-input" value="' + text + '" onchange="updateItemDOM(' + id + ', this)" />' +
                         '<div class="append">' + appendTag + '</div>' +
                     '</li>';
 
-    container.insertAdjacentHTML('beforeend', itemTag);
+    taskContainer.insertAdjacentHTML('beforeend', itemTag);
 }
 
 function updateItemDOM(id, inputBox) {
@@ -75,7 +86,7 @@ function completeItemDOM(id) {
     // Animation for the completion
     document.getElementById(id).className = "list-item animated fadeOutUp faster";
     document.getElementById('Completed').className += " animated pulse faster";
-    sleep(400).then(() => {
+    sleep(500).then(() => {
         document.getElementById(id).remove();
         document.getElementById('Completed').className = document.getElementById('Completed').className.replace(' animated pulse faster', '');
     });

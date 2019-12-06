@@ -1,12 +1,12 @@
 'use strict';
 
-var counter = 0;
-var items = {}, taskList = [];
+var idCounter = 0
+var taskList = [];
 
 const sideNav = document.getElementById('side-panel');
-const container = document.getElementById('todo-content');
+const taskContainer = document.getElementById('task-container');
 const userInput = document.getElementById('inputBox');
-const defaultConfig = [{"name":"Today","icon":"far fa-calendar-times","active":true,"itemList":[{"id":0,"text":"Brainstorm some concepts"},{"id":1,"text":"Design wireframe and mockup ✏️"},{"id":2,"text":"Bring umbrella ⛱"}]},{"name":"This Week","icon":"far fa-calendar-alt","itemList":[{"id":3,"text":"Hand in weekly report 📄"}]},{"name":"divider"},{"name":"Reminders","icon":"far fa-bell","itemList":[{"id":4,"text":"Buy cabbages 🥬"}]},{"name":"divider"},{"name":"Completed","icon":"far fa-calendar-check","itemList":[{"id":5,"text":"Meeting with client 🤦"}]}];
+const defaultConfig = [{"name":"Today","icon":"far fa-calendar","active":true,"itemList":[{"id":0,"text":"Brainstorm some concepts"},{"id":1,"text":"Design wireframe and mockup ✏️"},{"id":2,"text":"Bring umbrella home ⛱"},{"id":3,"text":"Buy some cabbages 🥬"},{"id":4,"text":"Pickup children from school 👨‍👧‍👦"}]},{"name":"This Week","icon":"far fa-calendar-alt","active":false,"itemList":[{"id":5,"text":"Hand in weekly report 📄"},{"id":6,"text":"Meeting with client 🤦"}]},{"name":"This Month","icon":"far fa-calendar-times","active":false,"itemList":[]},{"name":"divider"},{"name":"Reminders","icon":"far fa-bell","active":false,"itemList":[]},{"name":"divider"},{"name":"Completed","icon":"far fa-calendar-check","active":false,"itemList":[]}];
 
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -24,6 +24,7 @@ userInput.onkeydown = (e) => {
         }
     }
 }
+
 
 class Item {
     constructor(id, text) {
@@ -53,10 +54,18 @@ class Task {
         }
     }
 
+    getName() {
+        return this.name;
+    }
+
+    setName(name) {
+        this.name = name;    
+    }
+
     newItem(text) {
-        const newItem = new Item(counter, text);
+        const newItem = new Item(idCounter, text);
         this.itemList.push(newItem);
-        counter += 1;
+        idCounter += 1;
         return newItem;
     }
     
@@ -127,7 +136,7 @@ function loadTasks(content) {
     if (active) {
         isActive = ' active';
         Task.setCurrentTask(name);
-        document.getElementById('todo-title').innerText = name;
+        document.getElementById('task-title').value = name;
     }
 
     const tabContent = 
@@ -159,6 +168,5 @@ function loadConfig() {
 }
 
 function updateConfig() {
-    console.log(JSON.stringify(taskList));
     localStorage.setItem('userConfig', JSON.stringify(taskList));
 }

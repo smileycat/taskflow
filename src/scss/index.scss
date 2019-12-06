@@ -1,6 +1,7 @@
 $theme-color: rgb(47, 116, 148);
 $theme-color: lightseagreen;
 $theme-color: rgb(219, 76, 63);
+$theme-color: rgb(84, 97, 168);
 
 body {
   font-size: 0.9rem;
@@ -84,21 +85,31 @@ nav {
   }
 }
 
-#todo-content {
+#task-container {
   display: flex;
   flex-direction: column;
   // min-height: min-content;
 }
 
-#todo-header {
+#task-header {
   display: flex;
   flex-shrink: 0;
   justify-content: space-between;
   margin-bottom: 1.5rem;
 }
 
-#todo-title {
+#task-title {
+  border: 1px solid transparent;
+  display: flex;
+  font-size: 1.5rem;
   font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:focus {
+    border: 1px solid lightgray;
+  }
 }
 
 // use with symbol &#9675
@@ -107,6 +118,19 @@ nav {
   &:hover {
     color: $theme-color;
   }
+}
+
+.fa-trash {
+  cursor: pointer;
+}
+
+.item-input {
+  background-color: unset;
+  border: none;
+  font-size: 0.9rem;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 .list-item {
@@ -129,7 +153,7 @@ nav {
   cursor: pointer;
   font-size: 1rem;
   overflow-x: hidden;
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 2rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 
@@ -138,23 +162,8 @@ nav {
   }
 
 }
+
 .tab.active {
   font-weight: 600;
   background-color: white;
-}
-
-.fa-trash {
-  cursor: pointer;
-}
-
-.todo-input {
-  background-color: unset;
-  border: none;
-  // border-bottom: 1px solid lightgray;
-  font-size: 0.9rem;
-  // margin: 0.25rem 0;
-  // padding: 0.5rem 0;
-  margin: 0;
-  padding: 0;
-  width: 100%;
 }

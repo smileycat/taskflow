@@ -8,6 +8,7 @@ const inject = require('gulp-inject');
 const concat = require('gulp-concat');
 const browserSync = require('browser-sync').create();
 const htmlmin = require('gulp-htmlmin');
+const ghPages = require('gulp-gh-pages');
 
 const buildPath = {
 	html: ['build/'],
