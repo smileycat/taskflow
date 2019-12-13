@@ -2,13 +2,14 @@ body {
   font-size: 0.9rem; }
 
 i {
-  color: #5461a8; }
+  color: #db4c3f; }
 
 nav {
-  background-color: #5461a8;
+  background-color: #db4c3f;
   box-shadow: unset;
   color: white;
   flex-shrink: 0;
+  padding: 0.5rem 1rem;
   position: sticky;
   top: 0;
   left: 0; }
@@ -85,7 +86,7 @@ nav {
 .btn-none {
   font-size: 1rem; }
   .btn-none:hover {
-    color: #5461a8; }
+    color: #db4c3f; }
 
 .fa-trash {
   cursor: pointer; }

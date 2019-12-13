@@ -22,6 +22,7 @@ function switchTask(taskName) {
     prevTab.className = prevTab.className.replace(' active', '');
     
     // Add .active class to the current tab
+    console.log(taskName);
     document.getElementById(taskName).className += ' active';
     
     // Change the display contents according to current tab
@@ -36,25 +37,27 @@ function switchTask(taskName) {
 }
 
 function updateTaskNameDOM(element) {
-    //Update task name
+    // Update task name
+    const newName = element.value;
     const oldName = Task.getCurrentTask().getName();
-    Task.getCurrentTask().setName(element.value);
+    Task.getCurrentTask().setName(newName);
     // Update tab's name to the new name.
-    document.getElementById(oldName).querySelector('span').innerText = element.value;
-    document.getElementById(oldName).id = element.value;
+    document.getElementById(oldName).querySelector('span').innerText = newName;
+    document.getElementById(oldName).onclick = () => switchTask(newName);
+    document.getElementById(oldName).id = newName;
     updateConfig();
 }
 
 function appendItemDOM(item) {
     const {id, text} = item;
-
-    const appendTag = '<i class="fas fa-trash" onclick="removeItemDOM(' + id + ');"></i>' +
-                        '<i class="ml-2 fas fa-bars" onmousedown="draggables(' + id + ', this);" onmouseleave="undraggable(' + id + ', this);"></i>';
-    const itemTag = '<li id="' + id + '" class="list-item">' +
-                        '<button class="btn-none mr-2" onclick="completeItemDOM(' + id + ')">&#9675;</button>' +
-                        '<input type="text" class="item-input" value="' + text + '" onchange="updateItemDOM(' + id + ', this)" />' +
-                        '<div class="append">' + appendTag + '</div>' +
-                    '</li>';
+    const itemTag = `<li id="${id}" class="list-item">
+                        <button class="btn-none mr-2" onclick="completeItemDOM(${id})">&#9675;</button>
+                        <input type="text" class="item-input" value="${text}" onchange="updateItemDOM(${id}, this)" />
+                        <div class="append">
+                            <i class="fas fa-trash" onclick="removeItemDOM(${id});"></i>
+                            <i class="ml-2 fas fa-bars" onmousedown="draggables(${id}, this);" onmouseleave="undraggable(${id}, this);"></i>
+                        </div>
+                    </li>`;
 
     taskContainer.insertAdjacentHTML('beforeend', itemTag);
 }
@@ -71,9 +74,9 @@ function removeItemDOM(id) {
     updateConfig()
     // Animation for removing
     document.getElementById(id).className = "list-item animated fadeOutLeft faster";
-    sleep(400).then(() => {
-        document.getElementById(id).remove();
-    });
+    setTimeout(() => {
+        document.getElementById(id).remove()
+    }, 400);
 }
 
 function completeItemDOM(id) {
@@ -86,10 +89,10 @@ function completeItemDOM(id) {
     // Animation for the completion
     document.getElementById(id).className = "list-item animated fadeOutUp faster";
     document.getElementById('Completed').className += " animated pulse faster";
-    sleep(500).then(() => {
+    setTimeout(() => {
         document.getElementById(id).remove();
         document.getElementById('Completed').className = document.getElementById('Completed').className.replace(' animated pulse faster', '');
-    });
+    }, 500);
 }
 
 loadConfig();

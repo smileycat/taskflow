@@ -1,16 +1,12 @@
 'use strict';
 
-var idCounter = 0
-var taskList = [];
+let idCounter = 0
+let taskList = [];
 
 const sideNav = document.getElementById('side-panel');
 const taskContainer = document.getElementById('task-container');
 const userInput = document.getElementById('inputBox');
 const defaultConfig = [{"name":"Today","icon":"far fa-calendar","active":true,"itemList":[{"id":0,"text":"Brainstorm some concepts"},{"id":1,"text":"Design wireframe and mockup ✏️"},{"id":2,"text":"Bring umbrella home ⛱"},{"id":3,"text":"Buy some cabbages 🥬"},{"id":4,"text":"Pickup children from school 👨‍👧‍👦"}]},{"name":"This Week","icon":"far fa-calendar-alt","active":false,"itemList":[{"id":5,"text":"Hand in weekly report 📄"},{"id":6,"text":"Meeting with client 🤦"}]},{"name":"This Month","icon":"far fa-calendar-times","active":false,"itemList":[]},{"name":"divider"},{"name":"Reminders","icon":"far fa-bell","active":false,"itemList":[]},{"name":"divider"},{"name":"Completed","icon":"far fa-calendar-check","active":false,"itemList":[]}];
-
-const sleep = (ms) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 // Add new item into the current task and DOM.
 userInput.onkeydown = (e) => {
@@ -49,7 +45,7 @@ class Task {
         this.icon = icon;
         this.active = active;
         this.itemList = [];
-        for (const {id, text} of itemList) {
+        for (const {text} of itemList) {
             this.newItem(text);
         }
     }
@@ -70,30 +66,26 @@ class Task {
     }
     
     addItem(item) {
-        // this.itemList[item.id] = item;
         this.itemList.push(item);
     }
 
     getItem(id) {
-        for (const item of this.itemList) {
-            if (item.id == id)
-                return item;
-        }
+        return this.itemList.filter(item => item.id == id)[0];
     }
     
     updateItem(id, value) {
-        for (const item of this.itemList) {
+        this.itemList.forEach(item => {
             if (item.id == id)
                 item.setText(value);
-        }
+        })
     }
 
     removeItem(id) {
-        for (var i = 0; i < this.itemList.length; i++) {
-            if (this.itemList[i].id == id) {
-                return this.itemList.splice(i, 1);
+        this.itemList.forEach((item, index) => {
+            if (item.id == id) {
+                return this.itemList.splice(index, 1);
             }
-        }
+        });
     }
 
     static setCurrentTask(taskName) {
@@ -109,9 +101,10 @@ class Task {
         }
         
         // Add all items of this task to the dom.
-        for (const item of this.curTask.itemList) {
-            appendItemDOM(item);
-        }
+        this.curTask.itemList.forEach(item =>
+            appendItemDOM(item)
+        );
+
         return this.curTask;
     }
 
@@ -120,10 +113,7 @@ class Task {
     }
 
     static getTask(taskName) {
-        for (const task of taskList) {
-            if (task.name == taskName)
-                return task;
-        }
+        return taskList.filter(task => task.name == taskName)[0];
     }
 }
 
@@ -140,10 +130,10 @@ function loadTasks(content) {
     }
 
     const tabContent = 
-        '<div id="' + name + '" class="tab' + isActive + '" onclick="switchTask(&quot;' + name +'&quot;)">' +
-            '<i class="' + icon + '"></i>' +
-            '<span class="ml-2">' + name + '</span>' +
-        '</div>';
+        `<div id="${name}" class="tab${isActive}" onclick="switchTask(&quot;${name}&quot;)">
+            <i class="${icon}"></i>
+            <span class="ml-2">${name}</span>
+        </div>`;
     
     document.getElementById('side-panel').insertAdjacentHTML('beforeend', tabContent);
 }

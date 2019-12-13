@@ -10,6 +10,7 @@ const browserSync = require('browser-sync').create();
 const htmlmin = require('gulp-htmlmin');
 const ghPages = require('gulp-gh-pages');
 
+
 const buildPath = {
 	html: ['build/'],
 	scss: ['src/css'],
@@ -43,26 +44,27 @@ gulp.task('imageMin', () =>
 );
 
 // Concatenate & minify css files and js files
-gulp.task('concat-minify', (done) => {
-	gulp.src(path.scss)
-		.pipe(scss()).on('error', scss.logError)
-		.pipe(gulp.dest(buildPath.scss));
+// gulp.task('concat-minify', () => {
+	// gulp.src(path.scss)
+		// .pipe(scss()).on('error', scss.logError)
+		// .pipe(gulp.dest(buildPath.scss));
 
-	gulp.src(path.css)
+gulp.task('css-minify', () => {
+	return gulp.src(path.css)
 		.pipe(concat('main.min.css'))
 		.pipe(autoprefixer())
 		.pipe(cleanCSS())
 		.pipe(gulp.dest(buildPath.css));
-
-	gulp.src(path.scripts)
-		.pipe(concat('main.min.js'))
-		// .pipe(uglify())
-		.pipe(gulp.dest(buildPath.scripts));
-	
-	done();
 });
 
-gulp.task('html-minify', (done) => {
+gulp.task('js-minify', () => {
+	return gulp.src(path.scripts)
+		.pipe(concat('main.min.js'))
+		.pipe(uglify())
+		.pipe(gulp.dest(buildPath.scripts));
+});
+
+gulp.task('html-minify', () => {
 	// change the html to js template
 	inject.transform.html.js = filepath => `<script src="${filepath}" defer></script>`;
 	const sources = gulp.src(
@@ -70,7 +72,7 @@ gulp.task('html-minify', (done) => {
 		{read: false},
 	);
 	
-	gulp.src(path.html)
+	return gulp.src(path.html)
 		.pipe(gulp.dest(buildPath.html))
 		.pipe(inject(sources, {relative: true}))
 		.pipe(htmlmin({
@@ -78,8 +80,6 @@ gulp.task('html-minify', (done) => {
 			removeComments: true,
 		}))
 		.pipe(gulp.dest(buildPath.html));
-	
-	done();
 })
 
 // Proxy browsersync and watch modified files
@@ -108,10 +108,10 @@ gulp.task('watch-prod', () => {
 	});
 })
 
-gulp.task('deploy', function() {
+gulp.task('deploy', () => {
 	return gulp.src(path.build)
 	  .pipe(ghPages());
-  });
+});
 
 gulp.task('default', gulp.series(['watch']));
-gulp.task('build', gulp.series(['imageMin', 'concat-minify', 'html-minify']));
+gulp.task('build', gulp.series(['imageMin', 'scss', 'css-minify', 'js-minify', 'html-minify']));
