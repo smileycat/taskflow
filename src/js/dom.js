@@ -7,32 +7,25 @@ function undraggable(id, element) {
 }
 
 function showHideSideNav() {
-    if (sideNav.className.includes('active')) {
-        sideNav.setAttribute('data-show', 'off');
-        sideNav.className = sideNav.className.replace(' active', '');
-    } else {
-        sideNav.setAttribute('data-show', 'on');
-        sideNav.className += ' active';
-    }
+    sideNav.classList.toggle('active');
 }
 
 function switchTask(taskName) {
     // Remove .active class on previous tab
     let prevTab = document.getElementById(Task.getCurrentTask().getName());
-    prevTab.className = prevTab.className.replace(' active', '');
-    
+    prevTab.classList.remove('active');
+
     // Add .active class to the current tab
-    console.log(taskName);
-    document.getElementById(taskName).className += ' active';
-    
+    document.getElementById(taskName).classList.add('active');
+
     // Change the display contents according to current tab
     taskContainer.innerHTML = '';
     Task.setCurrentTask(taskName);
 
     // Change title
     document.getElementById('task-title').value = taskName;
-    // Close the side bar if it's active in small screen
-    sideNav.className = sideNav.className.replace(' active', '');
+    // if on small screen, will see sidebar gets closed.
+    sideNav.classList.remove('active');
     updateConfig();
 }
 
@@ -49,10 +42,10 @@ function updateTaskNameDOM(element) {
 }
 
 function appendItemDOM(item) {
-    const {id, text} = item;
+    const { id, text } = item;
     const itemTag = `<li id="${id}" class="list-item">
                         <button class="btn-none mr-2" onclick="completeItemDOM(${id})">&#9675;</button>
-                        <input type="text" class="item-input" value="${text}" onchange="updateItemDOM(${id}, this)" />
+                        <input type="text" class="item-input" value="${text}" onchange="updateItemDOM(${id}, this)" onkeydown="insertItem(${id}, event)" />
                         <div class="append">
                             <i class="fas fa-trash" onclick="removeItemDOM(${id});"></i>
                             <i class="ml-2 fas fa-bars" onmousedown="draggables(${id}, this);" onmouseleave="undraggable(${id}, this);"></i>
@@ -85,7 +78,7 @@ function completeItemDOM(id) {
     Task.getCurrentTask().removeItem(id);
     Task.getTask('Completed').addItem(item);
     updateConfig();
-    
+
     // Animation for the completion
     document.getElementById(id).className = "list-item animated fadeOutUp faster";
     document.getElementById('Completed').className += " animated pulse faster";
