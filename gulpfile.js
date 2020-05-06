@@ -43,12 +43,7 @@ gulp.task('imageMin', () =>
 		.pipe(gulp.dest(buildPath.img))
 );
 
-// Concatenate & minify css files and js files
-// gulp.task('concat-minify', () => {
-	// gulp.src(path.scss)
-		// .pipe(scss()).on('error', scss.logError)
-		// .pipe(gulp.dest(buildPath.scss));
-
+// Minify css files
 gulp.task('css-minify', () => {
 	return gulp.src(path.css)
 		.pipe(concat('main.min.css'))
@@ -57,6 +52,7 @@ gulp.task('css-minify', () => {
 		.pipe(gulp.dest(buildPath.css));
 });
 
+// Minify js files
 gulp.task('js-minify', () => {
 	return gulp.src(path.scripts)
 		.pipe(concat('main.min.js'))
@@ -64,17 +60,18 @@ gulp.task('js-minify', () => {
 		.pipe(gulp.dest(buildPath.scripts));
 });
 
+// Minify html files
 gulp.task('html-minify', () => {
 	// change the html to js template
 	inject.transform.html.js = filepath => `<script src="${filepath}" defer></script>`;
 	const sources = gulp.src(
 		['build/*.css', 'build/*.js'],
-		{read: false},
+		{ read: false },
 	);
-	
+
 	return gulp.src(path.html)
 		.pipe(gulp.dest(buildPath.html))
-		.pipe(inject(sources, {relative: true}))
+		.pipe(inject(sources, { relative: true }))
 		.pipe(htmlmin({
 			collapseWhitespace: true,
 			removeComments: true,
@@ -110,7 +107,7 @@ gulp.task('watch-prod', () => {
 
 gulp.task('deploy', () => {
 	return gulp.src(path.build)
-	  .pipe(ghPages());
+		.pipe(ghPages());
 });
 
 gulp.task('default', gulp.series(['watch']));
