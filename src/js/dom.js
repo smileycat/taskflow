@@ -1,13 +1,11 @@
+'use strict';
+
 function draggables(id, element) {
     document.getElementById(id).draggable = true;
 }
 
 function undraggable(id, element) {
     document.getElementById(id).draggable = false;
-}
-
-function showHideSideNav() {
-    sideNav.classList.toggle('active');
 }
 
 function switchTask(taskName) {
@@ -26,7 +24,7 @@ function switchTask(taskName) {
     document.getElementById('task-title').value = taskName;
     // if on small screen, will see sidebar gets closed.
     sideNav.classList.remove('active');
-    updateConfig();
+    Config.updateConfig();
 }
 
 function updateTaskNameDOM(element) {
@@ -38,7 +36,7 @@ function updateTaskNameDOM(element) {
     document.getElementById(oldName).querySelector('span').innerText = newName;
     document.getElementById(oldName).onclick = () => switchTask(newName);
     document.getElementById(oldName).id = newName;
-    updateConfig();
+    Config.updateConfig();
 }
 
 function appendItemDOM(item) {
@@ -57,14 +55,14 @@ function appendItemDOM(item) {
 
 function updateItemDOM(id, inputBox) {
     Task.getCurrentTask().updateItem(id, inputBox.value);
-    updateConfig();
+    Config.updateConfig();
     if (inputBox.value.trim() == '')
         removeItemDOM(id);
 }
 
 function removeItemDOM(id) {
     Task.getCurrentTask().removeItem(id);
-    updateConfig()
+    Config.updateConfig()
     // Animation for removing
     document.getElementById(id).className = "list-item animated fadeOutLeft faster";
     setTimeout(() => {
@@ -77,7 +75,7 @@ function completeItemDOM(id) {
     const item = Task.getCurrentTask().getItem(id).clone();
     Task.getCurrentTask().removeItem(id);
     Task.getTask('Completed').addItem(item);
-    updateConfig();
+    Config.updateConfig();
 
     // Animation for the completion
     document.getElementById(id).className = "list-item animated fadeOutUp faster";
@@ -88,4 +86,22 @@ function completeItemDOM(id) {
     }, 500);
 }
 
-loadConfig();
+(function () {
+    // Add new item into the current task and DOM.
+    userInput.onkeydown = (e) => {
+        if (e.key == 'Enter') {
+            e.preventDefault();
+            if (userInput.value.trim() != '') {
+                const newItem = Task.getCurrentTask().newItem(userInput.value.trim());
+                appendItemDOM(newItem);
+                Config.updateConfig();
+                userInput.value = '';
+            }
+        }
+    }
+
+    const navBtn = document.getElementById('navBtn');
+    navBtn.onclick = () => sideNav.classList.toggle('active');
+
+    Config.loadConfig();
+})();

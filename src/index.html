@@ -16,6 +16,9 @@
   <link rel="stylesheet" href="css/index.css" />
   <!-- endinject -->
   <!-- inject:js -->
+  <script defer src="js/item.js"></script>
+  <script defer src="js/task.js"></script>
+  <script defer src="js/config.js"></script>
   <script defer src="js/header.js"></script>
   <script defer src="js/dom.js"></script>
   <!-- endinject -->
@@ -23,34 +26,37 @@
 </head>
 
 <body>
-  <div class="d-flex-v items-center vh-100" style="max-height: 100vh;">
+  <main class="d-flex-v items-center vh-100">
+    <!-- navbar -->
     <nav>
       <ul class="ml-2 inline-list">
         <li class="mobile-nav">
-          <h5><i class="fas fa-bars" onclick="showHideSideNav();"></i></h5>
+          <h5><i id="navBtn" class="fas fa-bars"></i></h5>
         </li>
         <li>
-          <h5 id="logo">Taskflow <i class="fas fa-file-signature"></i></h5>
+          <h5 id="logo">Taskflow&nbsp;<i class="fas fa-file-signature"></i></h5>
         </li>
       </ul>
     </nav>
-    <main class="d-flex w-100 flex-fill">
-      <div id="side-panel">
-      </div>
+
+    <section class="d-flex w-100 flex-fill">
+      <aside id="side-panel">
+      </aside>
       <div id="main-panel">
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <div id="task-header">
-          <input id="task-title" class="input-none" onchange="updateTaskNameDOM(this);"/>
-          <div id="task-header-menu"></div>
+          <input id="task-title" class="input-none" onchange="updateTaskNameDOM(this);" />
+          <div id="task-header-menu">
+            <button id="addBtn" class="btn-none"><i class="fas fa-plus"></i></button>
+          </div>
         </div>
         <div class="d-flex-v">
           <div id="task-container"></div>
-          <input id="inputBox" class="item-input" type="text" placeholder="Add new item..."
-            aria-placeholder="Add new item" autofocus />
+          <input id="inputBox" class="item-input" type="text" placeholder="Add new item..." aria-placeholder="Add new item" autofocus />
         </div>
       </div>
-    </main>
-  </div>
+    </section>
+  </main>
 </body>
 
 </html>
