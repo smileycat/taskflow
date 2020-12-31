@@ -28,7 +28,7 @@ nav {
   li {
     cursor: pointer;
   }
-  
+
   @media (min-width: 577px) {
     .mobile-nav {
       display: none;
@@ -47,7 +47,7 @@ nav {
 }
 
 #logo {
-  font-family: "Courgette";
+  font-family: 'Courgette';
 }
 
 #main-panel {
@@ -58,8 +58,8 @@ nav {
 }
 
 #side-panel {
-  background-color: #FAFAFA;
-  border-right: 1px solid #ECECEC;
+  background-color: #fafafa;
+  border-right: 1px solid #ececec;
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -71,7 +71,7 @@ nav {
     align-self: center;
     width: 80%;
     margin: 0.5rem;
-    border-bottom: 2px solid #ECECEC;
+    border-bottom: 2px solid #ececec;
   }
 }
 
@@ -161,7 +161,6 @@ nav {
   &:hover {
     background-color: white;
   }
-
 }
 
 .tab.active {
