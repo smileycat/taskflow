@@ -1,13 +1,17 @@
 {
   "name": "taskflow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A To Do List website the helps manage scheduled tasks",
   "repository": {
     "type": "git",
     "url": "https://github.com/smileycat/Taskflow"
   },
-  "main": "gulpfile.js",
+  "homepage": "https://smileycat.github.io/Taskflow",
   "scripts": {
+    "start": "gulp",
+    "build": "gulp build",
+    "deploy": "gulp build && gulp deploy",
+    "watch-prod": "gulp watch-prod",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "smileycat",

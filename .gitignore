@@ -1,5 +1,5 @@
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.js
 
@@ -11,6 +11,7 @@
 /src/css
 
 # misc
+miscs
 .DS_Store
 .env.local
 .env.development.local
